@@ -419,3 +419,47 @@ html{
 .secondary-btn:hover{
     color:#0f172a;
 }
+
+/* TUTORIAL */
+.guide-layout{
+    display:flex;
+    padding:60px 8%;
+    gap:50px;
+}
+
+.guide-menu{
+    width:220px;
+    position:sticky;
+    top:100px;
+    align-self:flex-start;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.guide-menu a{
+    text-decoration:none;
+    color:#334155;
+    font-weight:500;
+}
+
+.guide-menu a:hover{
+    color:#2563eb;
+}
+
+.guide-content{
+    max-width:850px;
+}
+
+.guide-content section{
+    margin-bottom:70px;
+}
+
+.guide-content h1{
+    margin-bottom:16px;
+}
+
+.guide-content p{
+    color:#475569;
+    line-height:1.8;
+}
