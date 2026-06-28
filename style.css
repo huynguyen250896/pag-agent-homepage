@@ -506,3 +506,14 @@ html{
 .tab-content.active {
     display: block;
 }
+
+/* Click vao ten ra homepage */
+.member h4 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.member h4 a:hover {
+    text-decoration: underline;
+    color: #2b6cb0;
+}
