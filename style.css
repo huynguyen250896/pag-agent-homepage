@@ -463,3 +463,46 @@ html{
     color:#475569;
     line-height:1.8;
 }
+
+
+.tutorial-figure {
+    display: block;
+    width: 100%;
+    max-width: 900px;
+    margin: 30px auto;
+    border-radius: 8px;
+}
+
+.tabs {
+    display: flex;
+    gap: 6px;
+    margin: 24px 0 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab-btn {
+    padding: 10px 18px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 15px;
+    color: #666;
+}
+
+.tab-btn:hover {
+    color: #1f4e79;
+}
+
+.tab-btn.active {
+    color: #1f4e79;
+    font-weight: 600;
+    border-bottom: 3px solid #1f4e79;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}

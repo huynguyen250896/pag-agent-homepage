@@ -33,37 +33,45 @@
     </aside>
 
     <main class="guide-content">
-
-        <section id="start">
-            <h1>Getting Started</h1>
-            <p>PAG-Agent helps users analyze and interpret bulk or single-cell RNA-seq data through natural language interactions.</p>
-        </section>
-
-        <section id="input">
-            <h1>Input Data</h1>
-            <p>Users can upload expression matrices, gene lists, fold-change results, or pathway analysis outputs.</p>
-        </section>
-
-        <section id="analysis">
-            <h1>Analysis</h1>
-            <p>PAG-Agent supports preprocessing, differential expression analysis, pathway analysis, cORA, integrative analysis, and post-analysis tasks.</p>
-        </section>
-
-        <section id="citation">
-            <h1>Citation Retrieval</h1>
-            <p>PAG-Agent retrieves relevant scientific references to support biological interpretation and reduce unreliable AI-generated responses.</p>
-        </section>
-
-        <section id="faq">
-            <h1>FAQ</h1>
-            <p>Frequently asked questions will be added here.</p>
-        </section>
-
+        <div id="start"></div>
+        <div id="input"></div>
+        <!--<div id="analysis"></div>
+        <div id="citation"></div>
+        <div id="faq"></div> -->
     </main>
 
 </div>
 
 <a href="#start" class="top-btn">TOP</a>
+
+<script>
+async function loadContent(id, file) {
+    const response = await fetch(file);
+    const html = await response.text();
+    document.getElementById(id).innerHTML = html;
+}
+
+loadContent("start", "tutorial/getting_started.html");
+loadContent("input", "tutorial/input.html");
+loadContent("analysis", "tutorial/analysis.html");
+loadContent("citation", "tutorial/citation.html");
+loadContent("faq", "tutorial/faq.html");
+</script>
+
+<script>
+    function openTab(evt, tabId) {
+    document.querySelectorAll(".tab-content").forEach(tab => {
+        tab.classList.remove("active");
+    });
+
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    document.getElementById(tabId).classList.add("active");
+    evt.currentTarget.classList.add("active");
+}
+</script>
 
 </body>
 </html>
