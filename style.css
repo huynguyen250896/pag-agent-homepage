@@ -517,3 +517,21 @@ html{
     text-decoration: underline;
     color: #2b6cb0;
 }
+
+/* Menu Tree */
+.guide-menu a.submenu-title {
+    padding-left: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #444;
+}
+
+.guide-menu a.submenu-item {
+    padding-left: 44px;
+    font-size: 13px;
+    color: #666;
+}
+
+.guide-menu a.submenu-item::before {
+    content: "• ";
+}

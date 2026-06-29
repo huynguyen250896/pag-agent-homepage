@@ -13,14 +13,15 @@
 
     <!-- Bulk RNA-seq -->
     <div id="bulk" class="tab-content active">
-
+        <h3 id="bulk-consensus">Pathway-level Consensus Analysis</h3>
         <p>
         • The first module, <b>Pathway-level Consensus Analysis</b>, supports three input types:
-        (i) Expression matrix, (ii) Gene list, and (iii) Gene list with Fold change.
+        (i) <u>Expression matrix</u>, (ii) <u>Gene list</u>, and (iii) <u>Gene list with Fold change</u>.
         <br>
         <b>NOTE:</b> Gene identifiers (IDs) in all input data types must be mapped to their corresponding unique Entrez Gene IDs before analysis. 
         If the provided data already uses Entrez Gene IDs, this note can be skipped. Otherwise, users have two options 
         for conversion: (i) select an ID mapping option available in PAG-Agent or (ii) upload a custom ID mapping file. 
+        </p>
         <!-- This selected input type expects PAG-Agent to assist users with data 
         pre-processing on their raw input data, tailored to their chosen options, and supports a series of advanced analyses, 
         including differential expression analysis (DEA), pathway analysis (PA), and pathway-level consensus analysis. -->
@@ -59,100 +60,191 @@
                 <b>Differential Expression Analysis:</b> limma, DESeq2, or edgeR.
             </li>
         </ul> -->
-    <br><br>
-    For <u>Expression matrix</u>, users must provide a gene expression matrix
-    together with sample phenotype metadata, with an optional mapping file (Figure 2).
-    <br>
-    <!-- Users must also specify the following parameters: -->
-    <img src="img/Fig2_bulk.jpg" alt="metadata_bulk" width="850">
-    <b>Figure 2. Example bulk transcriptomics datasets with their corresponding metadata and optional mapping files.</b> 
-    The three examples shown (from top to bottom) correspond to the Alzheimer's disease datasets: <i>GSE153873</i>, 
-    <i>GSE61196</i>, and <i>GSE5281</i>. The <b>Expression data</b> must be organized with gene identifiers (IDs) as 
-    rows and samples as columns. The <b>metadata</b> must contain two required columns, <code>sample</code> and 
-    <code>condition</code>, which specify the sample identifiers and their associated experimental conditions. 
-    The <b>mapping file</b> is optional and is used to convert probe IDs in the input data to their corresponding Entrez Gene 
-    IDs. It must contain two columns, <code>FROM</code> (probe IDs) and <code>TO</code> (Entrez Gene IDs). To ensure 
-    compatibility with PAG-Agent during data preprocessing and downstream analyses, the required column names in both the 
-    metadata and mapping files must exactly match those shown in the figure (case-sensitive).
+        <br><br>
+        <h4 id="bulk-expression">Expression Matrix</h4>
+        <p>
+        For <u>Expression matrix</u>, users must provide a gene expression matrix
+        together with sample phenotype metadata, with an optional mapping file (Figure 2).
+        </p>
+        <br>
+        <!-- Users must also specify the following parameters: -->
+        <img src="img/Fig2_bulk.jpg" alt="metadata_bulk" width="850">
+        <b>Figure 2. Example bulk transcriptomics datasets with their corresponding metadata and optional mapping files.</b> 
+        The three examples shown (from top to bottom) correspond to the Alzheimer's disease datasets: <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE153873">GSE153873</a>, 
+        <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE61196">GSE61196</a>, and <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE5281">GSE5281</a>. The <b>Expression data</b> must be organized with gene identifiers (IDs) as 
+        rows and samples as columns. The <b>metadata</b> must contain two required columns, <code>sample</code> and 
+        <code>condition</code>, which specify the sample IDs and their associated experimental conditions. 
+        The <b>mapping file</b> is optional and is used to convert probe IDs in the input data to their corresponding Entrez Gene 
+        IDs. It must contain two columns, <code>FROM</code> (probe IDs) and <code>TO</code> (Entrez Gene IDs). To ensure 
+        compatibility with PAG-Agent during data preprocessing and downstream analyses, the required column names in both the 
+        metadata and mapping files must exactly match those shown in the figure (case-sensitive).
+        <br><br>
+        
+        <h4 id="bulk-gene-list">Gene List</h4>
+        <p>
+        For <u>Gene List</u>, PAG-Agent performs PA using
+        over-representation analysis (ORA). ORA requires two inputs:
+        <b>Input Gene List</b> and <b>Input Background</b>. The <b>Input Gene List</b>
+        contains one gene ID per line, representing the genes of interest provided
+        by the user.
+        </p>
+        <pre><code>
+        A2M
+        ABCB5
+        ADAMTS16
+        ADAMTS4
+        ADCK2
+        ADGRA3
+        ADGRG1
+        ADGRG6
+        ADIRF
+        ADM
+        AEBP1
+        AFAP1L2
+        ...
+        </code></pre>
 
-    <br><br>
-    For <u>Gene list</u>, users...
-
-    <br>
-    For <u>Gene list and Fold change</u>, users must provide at least one input file that conforms to one of the two supported formats
-    (Figure 4a,b). The format shown in Figure 4a supports PA using ORA only, 
-    whereas the format shown in Figure 4b enables PA using all supported statistical methods, including ORA, 
-    fast Gene Set Enrichment Analysis (fGSEA), the Kolmogorov-Smirnov (KS) test, and the Wilcoxon test. 
-    <br><br>
-    • The second module, <b>Pathway-level Meta-Analysis</b>, requires the input file to follow the format illustrated in Figure 4c.
-    <br>
-    <img src="img/Fig4_bulk.jpg" alt="data_format_bulk" width="850">
-    <b>Figure 4. Examples of Gene list with Fold change input files accepted by PAG-Agent in two minimum 
-    formats: with or without the <code>statistic</code> column.</b> The <code>ID</code> column contains Entrez Gene IDs, whereas 
-    <code>p.value</code> and <code>statistic</code> represent the p-values and test statistics generated by the selected 
-    DEA method. Specifically, <code>statistic</code> corresponds to the <i>t</i>-statistic for <b>limma</b>, the 
-    Wald statistic for <b>DESeq2</b>, and the likelihood ratio statistic for <b>edgeR</b>. Format <b>(a)</b> supports PA 
-    using ORA only, whereas format <b>(b)</b> enables all supported pathway analysis methods, including 
-    ORA, fGSEA, the KS test, and the Wilcoxon test. Format <b>(c)</b> is required for meta-analysis and includes 
-    the additional columns <code>logFC</code> (log<sub>2</sub> fold change), <code>logFCSE</code> (standard error of the 
-    log<sub>2</sub> fold change), and <code>sampleSize</code> (number of samples used in the DEA). 
-    To ensure compatibility with PAG-Agent, the required column names in the input files must exactly match those shown in the 
-    figure (case-sensitive).
-    </p>
+        <p>
+        The <b>Input Background</b> accepts the same format as the <b>Input Gene List</b>. This input is optional. If left empty, 
+        PAG-Agent automatically uses the union of all genes in the user-selected pathway database (i.e., KEGG or GO) as the background 
+        gene set.
+        <br>
+        To enable <b>cORA</b>, users must also provide two pieces of contextual information: <b>Experimental Conditions</b> and 
+        <b>Research Objectives</b>. These inputs allow PAG-Agent to perform context-aware pathway analysis and prioritization. 
+        An example of the <b>Experimental Conditions</b> input is shown below:
+        </p>
+        <pre><code>
+        Enrichment analysis for genes of four transcriptional states (P0 - P3) analyzed from single-cell 
+        RNA-seq (scRNA-seq) data of melanoma research.
+        </code></pre>
+        and an example of the <b>Research Objectives</b>: 
+        <pre><code>
+        Melanoma.
+        </code></pre>
+        <br>
+        
+        <h4 id="bulk-fold-change">Gene List and Fold Change</h4>
+        <p>
+        For <u>Gene list and Fold change</u>, users must provide at least one input file that conforms to one of the three supported formats
+        (Figure 3a-c). The format shown in Figure 3a supports PA using ORA only, 
+        whereas the formats shown in Figures 3b and 3c enable PA using all supported statistical methods, including ORA, 
+        fast Gene Set Enrichment Analysis (fGSEA), the Kolmogorov-Smirnov (KS) test, and the Wilcoxon test. 
+        <br>
+        <i>Note that the format in
+        Figure 3c also enables users to perform Gene-level Meta-Analysis (second module)</i>.
+        </p>
+        <br>
+        <img src="img/Fig3_bulk.jpg" alt="data_format_bulk" width="850">
+        <b>Figure 3. Examples of Gene list with Fold change input files accepted by PAG-Agent in two minimum 
+        formats: with or without the <code>statistic</code> column.</b> The <code>ID</code> column contains Entrez Gene IDs, whereas 
+        <code>p.value</code> and <code>statistic</code> represent the p-values and test statistics generated by the selected 
+        DEA method. Specifically, <code>statistic</code> corresponds to the <i>t</i>-statistic for <b>limma</b>, the 
+        Wald statistic for <b>DESeq2</b>, and the likelihood ratio statistic for <b>edgeR</b>. Format <b>(a)</b> supports PA 
+        using ORA only, whereas format <b>(b)</b> enables all supported pathway analysis methods, including 
+        ORA, fGSEA, the KS test, and the Wilcoxon test. Format <b>(c)</b> is required for meta-analysis and includes 
+        the additional columns <code>logFC</code> (log<sub>2</sub> fold change), <code>logFCSE</code> (standard error of the 
+        log<sub>2</sub> fold change), and <code>sampleSize</code> (number of samples used in the DEA). 
+        To ensure compatibility with PAG-Agent, the required column names in the input files must exactly match those shown in the 
+        figure (case-sensitive).
+        
+        <br><br>
+        <h3 id="bulk-meta">Pathway-level Meta-Analysis</h3>
+        <p>
+        • The second module, <b>Pathway-level Meta-Analysis</b>, accepts lists of gene-level and pathway-level statistics (Figure 4).
+        PAG-Agent enables users to perform meta-analysis on both gene-level and pathway-level results using one of six supported 
+        methods: Fisher's method, Stouffer's method, the minimum <i>p</i>-value method, the geometric mean method, addCLT, and 
+        restricted (residual) maximum likelihood (REML).
+        </p>
+        <img src="img/Fig4.jpg" alt="meta-analysis-data-format" width="850">
+        <b>Figure 4: Lists of example gene-level (a) and pathway-level (b) statistics.</b> Each pathway-level input file (b) must contain the following columns: <code>ID</code> (gene set ID), <code>p.value</code> (gene set <i>p</i>-value), <code>normalizedScore</code> (normalized enrichment score, NES), and <code>sampleSize</code> (total number of samples in the study). 
+        Each PA method computes a pathway enrichment score (ES) using its own statistical framework. For ORA, the Wilcoxon test, and the Kolmogorov–Smirnov (KS) test, the ES (equal to the NES) represents the logarithm of the ratio between the observed and expected numbers of differentially expressed (DE) genes within a pathway. A positive ES indicates that the pathway contains more DE genes than expected by chance, whereas a negative ES indicates fewer DE genes than expected. 
+        For fGSEA, the ES reflects the overall distribution of pathway genes within the ranked gene list generated from differential expression analysis. A positive ES indicates that pathway genes are preferentially enriched near the top of the ranked list, whereas a negative ES indicates enrichment near the bottom. Because the ES depends on pathway size, it cannot be directly compared across pathways. Therefore, fGSEA computes the normalized enrichment score (NES) by normalizing the ES against the mean absolute ES obtained from random permutations with the same sign.
+        To ensure compatibility with PAG-Agent, the required column names in both the gene-level and pathway-level input files must exactly match those shown in the figure (case-sensitive).
     </div>
 
     <!-- Single-cell RNA-seq -->
     <div id="scrna" class="tab-content">
-
+        <h3 id="">Pathway-level Consensus Analysis</h3>
         <p>
-            The first module, <b>Pathway-level Consensus Analysis</b>, supports two input types:
-            (i) Expression matrix and (ii) Gene list.
-            <br>
-            For Expression matrix, users must provide a gene expression matrix
-            together with sample phenotype metadata, with an optional mapping file.
-            Users must also specify the following parameters:
+        • The first module, <b>Pathway-level Consensus Analysis</b>, supports two input types:
+        (i) <u>Expression matrix</u> and (ii) <u>Gene list</u>.
+        <br>
+        <b>NOTE:</b> Gene identifiers (IDs) in all input data types must be mapped to their corresponding unique Entrez Gene IDs before analysis. 
+        If the provided data already uses Entrez Gene IDs, this note can be skipped. Otherwise, users have two options 
+        for conversion: (i) select an ID mapping option available in PAG-Agent or (ii) upload a custom ID mapping file. 
+        </p>
+        <br><br>
+        <h4 id="">Expression Matrix</h4>
+        <p>
+        For <u>Expression matrix</u>, users must provide a gene expression matrix
+        together with sample phenotype metadata, with an optional mapping file (Figure 2).
         </p>
         <br>
-        <ul>
-            <li>
-                <b>Organism:</b>
-                    <i>H. sapiens</i>,
-                    <i>M. musculus</i>,
-                    <i>R. norvegicus</i>,
-                    <i>D. rerio</i>,
-                    <i>D. melanogaster</i>,
-                    <i>C. elegans</i>,
-                    <i>S. cerevisiae</i>,
-                    <i>A. thaliana</i>,
-                    <i>S. pombe</i>, or
-                    <i>P. falciparum</i>.
-            </li>
+        <img src="img/Fig2_sc.jpg" alt="metadata_sc" width="850">
+        <b>Figure 2. Example single-cell transcriptomics data with their corresponding metadata and optional mapping file.</b> 
+        The example shown corresponds to the Peripheral blood mononuclear cells (PBMCs) from a healthy donor dataset: <a href="https://www.10xgenomics.com/datasets/3-k-pbm-cs-from-a-healthy-donor-1-standard-1-1-0">3k PBMCs</a>. 
+        The <b>Expression data</b> must be organized with gene identifiers (IDs) as 
+        rows and samples as columns. The <b>metadata</b> must contain two required columns, <code>sample</code> and 
+        <code>condition</code>, which specify the sample IDs and their associated experimental conditions. 
+        The <b>mapping file</b> is optional and is used to convert probe IDs in the input data to their corresponding Entrez Gene 
+        IDs. It must contain two columns, <code>FROM</code> (probe IDs) and <code>TO</code> (Entrez Gene IDs). To ensure 
+        compatibility with PAG-Agent during data preprocessing and downstream analyses, the required column names in both the 
+        metadata and mapping files must exactly match those shown in the figure (case-sensitive).
+        <br><br>
+        
+        <h4 id="">Gene List</h4>
+        <p>
+        For <u>Gene List</u>, PAG-Agent performs PA using
+        over-representation analysis (ORA). ORA requires two inputs:
+        <b>Input Gene List</b> and <b>Input Background</b>. The <b>Input Gene List</b>
+        contains one gene ID per line, representing the genes of interest provided
+        by the user.
+        </p>
+        <pre><code>
+        A2M
+        ABCB5
+        ADAMTS16
+        ADAMTS4
+        ADCK2
+        ADGRA3
+        ADGRG1
+        ADGRG6
+        ADIRF
+        ADM
+        AEBP1
+        AFAP1L2
+        ...
+        </code></pre>
 
-            <li>
-                <b>Pathway database:</b> KEGG and Gene Ontology (GO).
-            </li>
-
-            <li>
-                <b>Data Preprocessing:</b> Filtering out low-quality cells
-            </li>
-
-            <li>
-                <b>Library-size Normalization & Natural-log Transformation:</b> No or Yes.
-            </li>
-
-            <li>
-                <b>Differential Expression Analysis:</b> Wilcoxon Rank Sum test, MAST, DESeq2, or logistic regression
-            </li>
-        </ul>
-    <br>
-    <p>
-    Gene identifiers (IDs) in the input data must be mapped to their corresponding unique Entrez Gene IDs before analysis. 
-    If the provided data already uses Entrez Gene IDs, this step can be skipped. Otherwise, users have two options 
-    for conversion: (i) select an ID mapping option available in PAG-Agent or (ii) upload a custom ID mapping file 
-    (Figure 2). This selected input type expects PAG-Agent to assist users with data 
-    pre-processing on their raw input data, tailored to their chosen options, and supports a series of advanced analyses, 
-    including differential expression analysis (DEA), pathway analysis (PA), and pathway-level consensus analysis.
-    </p>
+        <p>
+        The <b>Input Background</b> accepts the same format as the <b>Input Gene List</b>. This input is optional. If left empty, 
+        PAG-Agent automatically uses the union of all genes in the user-selected pathway database (i.e., KEGG or GO) as the background 
+        gene set.
+        <br>
+        To enable <b>cORA</b>, users must also provide two pieces of contextual information: <b>Experimental Conditions</b> and 
+        <b>Research Objectives</b>. These inputs allow PAG-Agent to perform context-aware pathway analysis and prioritization. 
+        An example of the <b>Experimental Conditions</b> input is shown below:
+        </p>
+        <pre><code>
+        Enrichment analysis for genes of four transcriptional states (P0 - P3) analyzed from single-cell 
+        RNA-seq (scRNA-seq) data of melanoma research.
+        </code></pre>
+        and an example of the <b>Research Objectives</b>: 
+        <pre><code>
+        Melanoma.
+        </code></pre>
+        <h3 id="bulk-meta">Pathway-level Meta-Analysis</h3>
+        <p>
+        • The second module, <b>Pathway-level Meta-Analysis</b>, accepts lists of gene-level and pathway-level statistics (Figure 4).
+        PAG-Agent enables users to perform meta-analysis on both gene-level and pathway-level results using one of six supported 
+        methods: Fisher's method, Stouffer's method, the minimum <i>p</i>-value method, the geometric mean method, addCLT, and 
+        restricted (residual) maximum likelihood (REML).
+        </p>
+        <img src="img/Fig4.jpg" alt="meta-analysis-data-format" width="850">
+        <b>Figure 4: Lists of example gene-level (a) and pathway-level (b) statistics.</b> Each pathway-level input file (b) must contain the following columns: <code>ID</code> (gene set ID), <code>p.value</code> (gene set <i>p</i>-value), <code>normalizedScore</code> (normalized enrichment score, NES), and <code>sampleSize</code> (total number of samples in the study). 
+        Each PA method computes a pathway enrichment score (ES) using its own statistical framework. For ORA, the Wilcoxon test, and the Kolmogorov–Smirnov (KS) test, the ES (equal to the NES) represents the logarithm of the ratio between the observed and expected numbers of differentially expressed (DE) genes within a pathway. A positive ES indicates that the pathway contains more DE genes than expected by chance, whereas a negative ES indicates fewer DE genes than expected. 
+        For fGSEA, the ES reflects the overall distribution of pathway genes within the ranked gene list generated from differential expression analysis. A positive ES indicates that pathway genes are preferentially enriched near the top of the ranked list, whereas a negative ES indicates enrichment near the bottom. Because the ES depends on pathway size, it cannot be directly compared across pathways. Therefore, fGSEA computes the normalized enrichment score (NES) by normalizing the ES against the mean absolute ES obtained from random permutations with the same sign.
+        To ensure compatibility with PAG-Agent, the required column names in both the gene-level and pathway-level input files must exactly match those shown in the figure (case-sensitive).
     </div>
 
 </section>
