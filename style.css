@@ -535,3 +535,46 @@ html{
 .guide-menu a.submenu-item::before {
     content: "• ";
 }
+
+/* banner */
+.typing-banner{
+    margin: 28px auto 34px;
+    max-width: 950px;
+    min-height: 3.6em;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:clamp(1.15rem,2vw,1.65rem);
+    line-height:1.6;
+    font-weight:500;
+    color:#2b6cff;
+
+    text-align:center;
+}
+
+#typingText{
+    white-space:pre-wrap;
+}
+
+.cursor{
+    margin-left:2px;
+    color:#2b6cff;
+    animation:blink .9s infinite;
+}
+
+@keyframes blink{
+    0%,45%{
+        opacity:1;
+    }
+    46%,100%{
+        opacity:0;
+    }
+}
+
+.prompt-symbol{
+    color:#7c3aed;
+    margin-right:10px;
+    font-weight:700;
+}

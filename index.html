@@ -26,7 +26,7 @@
     </ul>
 
     <a href="#" class="analyze-btn">
-        Analyze →
+        Chat →
     </a>
 </nav>
 
@@ -40,13 +40,19 @@
         PAG-Agent
     </h1>
 
+    <div class="typing-banner">
+        <span class="prompt-symbol">&gt;</span>
+        <span id="typingText"></span>
+        <span class="cursor">|</span>
+    </div>
+
     <p>
-        A biologist-oriented research assistant for context-aware pathway prioritization and interpretation.
+        A biologist-oriented research assistant for context-aware pathway analysis, prioritization, and interpretation.
     </p>
 
     <div class="hero-buttons">
         <a href="#" class="primary-btn">
-            Analyze
+            Let's Chat
         </a>
 
         <a href="https://www.biorxiv.org/content/10.64898/2026.06.02.729674v1" 
@@ -235,5 +241,137 @@
 
 <a href="#home" class="top-btn">TOP</a>
 
+<script>
+const typingText = document.getElementById("typingText");
+
+const phrases = [
+    "Hey PAG-Agent, I want you to perform cORA for me",
+    "Interesting.... How about GSEA?",
+    "Can you provide me with all information of this gene 213 within the context of Alzheimer's disease?",
+    "Awesome! Can you draw KEGG map for hsa05010?",
+    "Please give me relevant citations for associations between Oxidative Phosphorylation and Alzheimer's disease"
+];
+
+const typoPlans = {
+    2: [{
+        wrong: "contexxt",
+        delete: 2,
+        insert: "t"
+    }],
+
+    4: [{
+        wrong: "Phosporylation",
+        delete: 9,
+        insert: "horylation"
+    }]
+};
+
+let phraseIndex = 0;
+
+function random(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function getDelay(char) {
+
+    if (char === "." || char === "!" || char === "?")
+        return random(220, 420);
+
+    if (char === ",")
+        return random(140, 260);
+
+    if (char === " ")
+        return random(20, 60);
+
+    return random(40, 90);
+}
+
+async function typeText(text) {
+
+    for (const ch of text) {
+        typingText.textContent += ch;
+        await sleep(getDelay(ch));
+    }
+
+}
+
+async function deleteChars(n) {
+
+    while (n--) {
+        typingText.textContent = typingText.textContent.slice(0, -1);
+        await sleep(random(18, 35));
+    }
+
+}
+
+async function deleteAll() {
+
+    while (typingText.textContent.length) {
+        typingText.textContent = typingText.textContent.slice(0, -1);
+        await sleep(random(15, 30));
+    }
+
+}
+
+async function typePhrase(index) {
+
+    const phrase = phrases[index];
+    const typo = typoPlans[index];
+
+    if (!typo) {
+        await typeText(phrase);
+        return;
+    }
+
+    let current = 0;
+
+    for (const t of typo) {
+
+        const correct = t.wrong.slice(0, t.wrong.length - t.delete) + t.insert;
+        const pos = phrase.indexOf(correct, current);
+
+        await typeText(phrase.slice(current, pos));
+
+        await typeText(t.wrong);
+
+        await sleep(random(80, 150));
+
+        await deleteChars(t.delete);
+
+        await sleep(random(120, 220));
+
+        await typeText(t.insert);
+
+        current = pos + correct.length;
+    }
+
+    await typeText(phrase.slice(current));
+
+}
+
+async function loop() {
+
+    while (true) {
+
+        await typePhrase(phraseIndex);
+
+        await sleep(random(1800, 2600));
+
+        await deleteAll();
+
+        await sleep(random(300, 700));
+
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+
+    }
+
+}
+
+loop();
+</script>
 </body>
 </html>
